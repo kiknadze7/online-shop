@@ -4,7 +4,7 @@
     <div class="container">
         <h2>Shopping Cart</h2>
 
-        @if ($cartItems->isEmpty())
+        @if (empty($cartItems))
             <p>Your cart is empty.</p>
         @else
             <table class="table">
@@ -14,6 +14,7 @@
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Total</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,6 +24,13 @@
                             <td>{{ $item->quantity }}</td>
                             <td>{{ $item->product->price / 100 }} ₾</td>
                             <td>{{ ($item->quantity * $item->product->price) / 100 }} ₾</td>
+                            <td>
+                                <form action="{{ route('cart.remove', $item->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('POST')
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

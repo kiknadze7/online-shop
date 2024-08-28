@@ -76,4 +76,24 @@ class CartController extends Controller
 
         return view('cart.checkout.index');
     }
+
+    public function remove($itemId)
+    {
+        $user = User::find(Auth::id());
+        $cart = $user->cart()->where('status', 'active')->first();
+
+        if (!$cart) {
+            return redirect()->back()->withErrors('Cart not found.');
+        }
+
+        $cartItem = $cart->cartItems()->find($itemId);
+
+        if (!$cartItem) {
+            return redirect()->back()->withErrors('Cart item not found.');
+        }
+
+        $cartItem->delete();
+
+        return redirect()->back()->with('success', 'Item removed from cart.');
+    }
 }
