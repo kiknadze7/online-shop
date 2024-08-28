@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
@@ -27,6 +28,46 @@ class CartController extends Controller
             'cartItems' => $cartItems,
         ]);
     }
+
+    public function confirmation($id)
+    {
+        $order = Order::findOrFail($id);
+        return view('cart.checkout.confirmation', compact('order'));
+    }
+
+
+    public function create(Request $request)
+    {
+        $user = User::find(Auth::id());
+        $cart = $user->cart()->where('status', 'active')->first();
+
+        if (!$cart) {
+            return redirect()->back()->withErrors('No active cart found.');
+        }
+
+        $totalProduct = $cart->cartItems()->count();
+        $totalPrice = $cart->cartItems()->get()->reduce(function ($carry, $item) {
+            return $carry + ($item->quantity * $item->product->price);
+        }, 0);
+        $productQuantity = $cart->cartItems()->sum('quantity');
+
+        $order = Order::create([
+            'user_id' => $user->id,
+            'cart_id' => $cart->id,
+            'contact_number' => $request->input('contact_number'),
+            'address' => $request->input('address'),
+            'total_product' => $totalProduct,
+            'total_price' => $totalPrice / 100,
+            'product_quantity' => $productQuantity,
+            'status' => 'new',
+        ]);
+
+        $cart->update(['status' => 'finished']);
+
+        return redirect()->route('order.confirmation', $order->id)->with('success', 'Order created successfully!');
+    }
+
+
 
     public function add(Request $request)
     {

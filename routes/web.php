@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     Route::post('/cart/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/order/create', [CartController::class, 'create'])->name('order.create');
+    Route::get('/order/confirmation/{id}', [CartController::class, 'confirmation'])->name('order.confirmation');
 });
 
 Route::group(['middleware' => isAdmin::class], function () {
