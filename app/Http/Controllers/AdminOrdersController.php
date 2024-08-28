@@ -28,7 +28,7 @@ class AdminOrdersController extends Controller
             $query->whereDate('created_at', '<=', $dateTo);
         }
 
-        $orders = $query->paginate(10);
+        $orders = $query->paginate(60);
 
         return view('admin.orders.index', [
             'orders' => $orders,
