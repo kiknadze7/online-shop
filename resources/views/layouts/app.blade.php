@@ -14,7 +14,6 @@
         @endif
     </title>
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
 </head>
 
 <body>
@@ -27,14 +26,12 @@
                         style="max-height: 40px;">
                 </a>
 
-
                 <form class="d-flex mx-auto" style="flex: 1; max-width: 600px;">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-warning" type="submit">Search</button>
                 </form>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
                     <ul class="navbar-nav ms-auto">
                         @guest
                             @if (Route::has('login'))
@@ -56,18 +53,18 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     @if (Auth::user()->is_admin && Route::has('admin.index'))
                                         <a class="dropdown-item" href="{{ route('admin.index') }}">
-                                            ადმინის პანელი
+                                            Admin Panel
                                         </a>
                                     @endif
                                     @if (Route::has('profile'))
                                         <a class="dropdown-item" href="{{ route('profile') }}">
-                                            პროფილი
+                                            Profile
                                         </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        გასვლა
+                                        Logout
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
@@ -75,15 +72,22 @@
                                 </div>
                             </li>
 
-
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    კალათა
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Cart
+                                    @php
+                                        $cart = Auth::check() ? Auth::user()->cart : null;
+                                        $cartItemCount = $cart ? $cart->cartItems->count() : 0;
+                                    @endphp
+                                    <span class="badge bg-warning text-dark">{{ $cartItemCount }}</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-
-                                    კალათა ცარიელია
+                                    @if ($cart && $cartItemCount > 0)
+                                        <a class="dropdown-item" href="{{ route('cart.index') }}">View Cart</a>
+                                    @else
+                                        <a class="dropdown-item">Cart is empty</a>
+                                    @endif
                                 </div>
                             </li>
 

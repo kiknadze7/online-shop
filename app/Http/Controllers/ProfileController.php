@@ -9,11 +9,11 @@ class ProfileController extends Controller
 
     public function index()
     {
-        return dd('profile index');
+        return view('cart.checkout.index');
     }
 
     public function update(Request $request)
     {
-        return dd('profile update');
+        return view('cart.checkout.index');
     }
 }
