@@ -53,7 +53,11 @@
             <tbody>
                 @foreach ($orders as $order)
                     <tr>
-                        <td class="align-middle">{{ $order->id }}</td>
+                        <td class="align-middle">
+                            <a href="{{ route('orders.show', $order->id) }}" class="text-decoration-none">
+                                {{ $order->id }}
+                        </td>
+                        </a>
                         <td class="align-middle">
                             <small class="text-muted">{{ $order->user->name ?? 'N/A' }}</small>
                         </td>
