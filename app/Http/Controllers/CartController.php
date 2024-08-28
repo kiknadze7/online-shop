@@ -34,34 +34,28 @@ class CartController extends Controller
         $productId = $request->input('product_id');
         $quantity = $request->input('quantity', 1);
 
-        // Validate the input
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // Find or create the user's cart
         $cart = $user->cart()->firstOrCreate([
             'status' => 'active',
         ]);
 
-        // Find the product
         $product = Product::find($productId);
 
         if (!$product) {
             return redirect()->back()->withErrors('Product not found.');
         }
 
-        // Find or create the cart item
         $cartItem = $cart->cartItems()->where('product_id', $productId)->first();
 
         if ($cartItem) {
-            // Update the quantity if the item already exists in the cart
             $cartItem->update([
                 'quantity' => $cartItem->quantity + $quantity,
             ]);
         } else {
-            // Create a new cart item if it doesn't exist
             $cart->cartItems()->create([
                 'product_id' => $productId,
                 'quantity' => $quantity,
