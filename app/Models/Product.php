@@ -17,12 +17,10 @@ class Product extends Model
         'description',
         'price',
         'quantity',
+        'is_active',
+        'is_featured',
     ];
 
-    protected $casts = [
-        'price' => 'integer',
-        'quantity' => 'integer',
-    ];
 
     public function category()
     {
@@ -32,10 +30,5 @@ class Product extends Model
     public function photos()
     {
         return $this->hasMany(Photo::class);
-    }
-
-    public function carts()
-    {
-        return $this->hasMany(Cart::class);
     }
 }

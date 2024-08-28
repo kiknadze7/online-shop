@@ -54,10 +54,20 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @if (Auth::user()->is_admin && Route::has('admin.index'))
+                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                            ადმინის პანელი
+                                        </a>
+                                    @endif
+                                    @if (Route::has('profile'))
+                                        <a class="dropdown-item" href="{{ route('profile') }}">
+                                            პროფილი
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        გასვლა
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
@@ -65,20 +75,18 @@
                                 </div>
                             </li>
 
-                            <li class="nav-item ">
-                                <h5 class="text-white">cart</h5>
 
-                                {{-- <a class="nav-link position-relative" href="{{ route('cart') }}">
-                                    <i class="bi bi-cart"></i>asd
-                                    @if ($cartItemCount > 0)
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                            {{ $cartItemCount }}
-                                            <span class="visually-hidden">unread messages</span>
-                                        </span>
-                                    @endif
-                                </a> --}}
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    კალათა
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+                                    კალათა ცარიელია
+                                </div>
                             </li>
+
 
                         @endguest
                     </ul>

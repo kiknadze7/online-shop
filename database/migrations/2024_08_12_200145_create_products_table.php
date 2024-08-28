@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('name');
             $table->text('description');
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_featured')->default(false);
             $table->unsignedInteger('price');
             $table->unsignedInteger('quantity');
             $table->softDeletes();

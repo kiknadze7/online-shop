@@ -8,18 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    protected $table = 'orders';
 
     protected $fillable = [
         'user_id',
+        'cart_id',
         'contact_number',
         'address',
-        'total',
+        'total_product',
+        'total_price',
+        'product_quantity',
         'status',
-    ];
-
-    protected $casts = [
-        'total' => 'integer',
     ];
 
     public function user()
@@ -27,8 +25,8 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function carts()
+    public function cart()
     {
-        return $this->hasMany(Cart::class);
+        return $this->belongsTo(Cart::class);
     }
 }

@@ -4,7 +4,6 @@
 
 @section('content')
 
-
-
+    user- landing
 
 @endsection
